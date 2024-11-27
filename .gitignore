@@ -1,0 +1,7 @@
+.gradle
+.idea
+*/build
+*.iml
+
+# Don't publish input
+*/src/**/*.txt
