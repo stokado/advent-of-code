@@ -5,3 +5,6 @@
 
 # Don't publish input
 */src/**/*.txt
+
+# Test inputs are fine
+!*/src/**/*_test.txt
