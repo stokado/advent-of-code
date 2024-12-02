@@ -3,8 +3,8 @@ import kotlin.math.*
 private const val DAY = "Day01"
 
 fun main() {
-    val input = readInput(DAY)
-    val testInput = readInput("${DAY}_test")
+    val input = readLines(DAY)
+    val testInput = readLines("${DAY}_test")
 
     partResults("Part 1", 11, part1(testInput)) { part1(input) }
     partResults("Part 2", 31, part2(testInput)) { part2(input) }

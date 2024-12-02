@@ -1,17 +1,18 @@
 private const val DAY = "DayTemplate"
 
 fun main() {
-    val input = readInput(DAY)
-    val testInput = readInput("${DAY}_test")
+    val input = readLines(DAY)
+    val testInput = readLines("${DAY}_test")
 
     val part1Expected = 0
     val part1Answer = part1(testInput)
 
-    val part2Expected = 0
-    val part2Answer = part2(testInput)
+    partResults("Part 1", part1Expected, part1Answer) { part1(input) }
 
-    check(part1Expected == part1Answer)
-    check(part2Expected == part2Answer)
+//    val part2Expected = 0
+//    val part2Answer = part2(testInput)
+
+//    partResults("Part 2", 0, part2(testInput)) { part2(input) }
 }
 
 private fun part1(input: List<String>): Int = TODO()
