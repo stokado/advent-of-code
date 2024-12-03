@@ -7,4 +7,4 @@
 */src/**/*.txt
 
 # Test inputs are fine
-!*/src/**/*_test.txt
+!*/src/**/*_test*.txt
