@@ -26,6 +26,9 @@ fun String.splitIntegers(vararg delimiters: String = arrayOf(" ", ",", ", ")): L
 
 fun <T> List<T>.toPair(): Pair<T, T> = get(0) to get(1)
 
+/** More convenient way to print test values. */
+fun <T> T.printValue(): T = also(::println)
+
 /**
  * Converts string to md5 hash.
  */
