@@ -9,6 +9,11 @@ import kotlin.time.*
 fun readLines(name: String) = path(name).readLines()
 
 /**
+ * Reads input file as a single text
+ */
+fun readText(name: String) = path(name).readText()
+
+/**
  * Reads values and transforms it
  * @param name path to input data
  * @param transform function to transform input to a type T
@@ -16,8 +21,10 @@ fun readLines(name: String) = path(name).readLines()
 fun <T> readLines(name: String, transform: (String) -> T) = readLines(name).map(transform)
 fun path(name: String) = Path("src", "$name.txt")
 
-fun String.splitIntegers(): List<Int> =
-    split(" ").map { it.toInt() }
+fun String.splitIntegers(vararg delimiters: String = arrayOf(" ", ",", ", ")): List<Int> =
+    split(*delimiters).map(String::toInt)
+
+fun <T> List<T>.toPair(): Pair<T, T> = get(0) to get(1)
 
 /**
  * Converts string to md5 hash.
