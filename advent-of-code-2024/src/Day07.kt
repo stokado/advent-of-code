@@ -9,10 +9,10 @@ fun main() {
 
     partResults("Part 1", part1Expected, part1Answer) { part1(input) }
 
-//    val part2Expected = 0
-//    val part2Answer = part2(testInput)
+    val part2Expected = 11387L
+    val part2Answer = part2(testInput)
 
-//    partResults("Part 2", part2Expected, part2Answer) { part2(input) }
+    partResults("Part 2", part2Expected, part2Answer) { part2(input) }
 }
 
 private fun part1(input: List<Equation>): Long {
@@ -20,8 +20,13 @@ private fun part1(input: List<Equation>): Long {
         .sumOf { it.rule }
 }
 
-private fun part2(input: List<String>): Int = TODO()
+private fun part2(input: List<Equation>): Long {
+    return input.filter { isValidEquation(it.numbers, it.rule, listOf(Long::plus, Long::times, Long::concat)) }
+        .sumOf { it.rule }
+}
 
+
+private fun Long.concat(other: Long): Long = "$this$other".toLong()
 
 private data class Equation(val rule: Long, val numbers: List<Long>)
 private typealias Operation = (Long, Long) -> Long
