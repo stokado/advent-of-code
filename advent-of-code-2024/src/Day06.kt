@@ -27,12 +27,35 @@ private fun part1(input: Input): Int {
 }
 
 private fun part2(input: Input): Int {
+    val seenLocation = mutableSetOf<Position>()
     var possibleNewObstacles = 0
+
+    fun willFormCycle(start: Position, initialDirection: Direction, obstacles: Set<Position>): Boolean {
+        val seenStates = mutableSetOf<State>()
+        guardWalk(input, start, initialDirection, obstacles) { state, _ -> if (!seenStates.add(state)) return true }
+
+        return false
+    }
+
+    guardWalk(input) { (position, _), (nextPosition, nextDirection) ->
+        seenLocation.add(position)
+
+        if (nextPosition !in seenLocation &&
+            willFormCycle(
+                start = position,
+                initialDirection = nextDirection.turnRight(),
+                obstacles = input.obstacles + nextPosition,
+            )
+        ) {
+            possibleNewObstacles++
+        }
+    }
+
     return possibleNewObstacles
 }
 
 
-private fun guardWalk(
+private inline fun guardWalk(
     input: Input,
     start: Position = input.start,
     initialDirection: Direction = NORTH,
