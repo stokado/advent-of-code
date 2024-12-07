@@ -24,6 +24,9 @@ fun path(name: String) = Path("src", "$name.txt")
 fun String.splitIntegers(vararg delimiters: String = arrayOf(" ", ",", ", ")): List<Int> =
     split(*delimiters).map(String::toInt)
 
+fun String.splitLongs(vararg delimiters: String = arrayOf(" ", ",", ", ")): List<Long> =
+    split(*delimiters).map(String::toLong)
+
 fun <T> List<T>.toPair(): Pair<T, T> = get(0) to get(1)
 
 /** More convenient way to print test values. */
