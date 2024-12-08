@@ -3,6 +3,9 @@ package libs
 data class Position(val x: Int, val y: Int) {
     fun offsetBy(x: Int = 0, y: Int = 0): Position = Position(this.x + x, this.y + y)
 
+    operator fun minus(other: Position): Position = Position(this.x - other.x, this.y - other.y)
+    operator fun plus(other: Position): Position = Position(this.x + other.x, this.y + other.y)
+
     companion object {
         val None = Position(-1, -1)
     }
