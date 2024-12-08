@@ -12,10 +12,10 @@ fun main() {
 
     partResults("Part 1", part1Expected, part1Answer) { part1(input) }
 
-//    val part2Expected = 0
-//    val part2Answer = part2(testInput)
+    val part2Expected = 34
+    val part2Answer = part2(testInput)
 
-//    partResults("Part 2", part2Expected, part2Answer) { part2(input) }
+    partResults("Part 2", part2Expected, part2Answer) { part2(input) }
 }
 
 private fun part1(input: AntennaField): Int {
@@ -40,8 +40,33 @@ private fun part1(input: AntennaField): Int {
     return antiNodes.size
 }
 
-private fun part2(input: List<String>): Int = TODO()
+private fun part2(input: AntennaField): Int {
+    val bounds = input.bounds
+    val antennas = input.antennas
+    val antiNodes = mutableSetOf<Position>()
 
+    antennas.values.forEach { positions ->
+        positions.forEach { position ->
+            positions.forEach {
+                if (it != position) {
+                    val distance = position - it
+                    var newAntiNodePosition = position + distance
+                    var newAntiNodePositionInOtherDirection = position - distance
+                    while (newAntiNodePosition in bounds) {
+                        antiNodes.add(newAntiNodePosition)
+                        newAntiNodePosition += distance
+                    }
+                    while(newAntiNodePositionInOtherDirection in bounds) {
+                        antiNodes.add(newAntiNodePositionInOtherDirection)
+                        newAntiNodePositionInOtherDirection -= distance
+                    }
+                }
+            }
+        }
+    }
+
+    return antiNodes.size
+}
 
 private fun readInput(name: String): AntennaField {
     val lines = readLines(name)
