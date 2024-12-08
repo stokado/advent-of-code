@@ -107,9 +107,3 @@ private data class Input(
     val obstacles: Set<Position>,
     val bounds: Bounds
 )
-
-private data class Bounds(val rowBounds: IntRange, val columnBounds: IntRange) {
-    operator fun contains(position: Position): Boolean {
-        return position.x in rowBounds && position.y in columnBounds
-    }
-}
