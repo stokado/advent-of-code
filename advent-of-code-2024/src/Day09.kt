@@ -15,11 +15,12 @@ fun main() {
 //    partResults("Part 2", part2Expected, part2Answer) { part2(input) }
 }
 
-private fun part1(input: List<MemoryPiece>): Long {
+private fun part1(input: MutableList<MemoryPiece>): Long {
     var result = 0L
+    input.rearrangeMemory()
 
     for ((i, memory) in input.withIndex()) {
-        if (memory.id == null) {
+        if (memory.id == -1) {
             break
         }
         val hash = i * memory.id
@@ -32,10 +33,10 @@ private fun part1(input: List<MemoryPiece>): Long {
 private fun part2(input: List<String>): Int = TODO()
 
 private data class MemoryPiece(
-    val id: Int?
+    val id: Int
 )
 
-private fun readInput(name: String): List<MemoryPiece> {
+private fun readInput(name: String): MutableList<MemoryPiece> {
     val inputRaw = readText(name)
     val input = mutableListOf<MemoryPiece>()
     var currentId = 0
@@ -52,11 +53,10 @@ private fun readInput(name: String): List<MemoryPiece> {
             currentId++
         } else {
             for (j in 0 until size) {
-                input.add(MemoryPiece(null))
+                input.add(MemoryPiece(-1))
             }
         }
     }
-    input.rearrangeMemory()
     return input
 }
 
@@ -65,16 +65,16 @@ private fun MutableList<MemoryPiece>.rearrangeMemory() {
     var right = this.lastIndex
 
     while (left <= right) {
-        if (this[left].id == null && this[right].id != null) {
+        if (this[left].id == -1 && this[right].id != -1) {
             this[left] = this[right]
-            this[right] = MemoryPiece(null)
+            this[right] = MemoryPiece(-1)
             left++
             right--
         }
-        if (this[left].id != null) {
+        if (this[left].id != -1) {
             left++
         }
-        if (this[right].id == null) {
+        if (this[right].id == -1) {
             right--
         }
     }
