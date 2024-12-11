@@ -12,23 +12,29 @@ fun main() {
 
     partResults("Part 1", part1Expected, part1Answer) { part1(input) }
 
-//    val part2Expected = 0
-//    val part2Answer = part2(testInput)
+    val part2Expected = 81
+    val part2Answer = part2(testInput)
 
-//    partResults("Part 2", part2Expected, part2Answer) { part2(input) }
+    partResults("Part 2", part2Expected, part2Answer) { part2(input) }
 }
 
-private fun part1(input: Map<Position, Int>): Int {
+private fun part1(input: Map<Position, Int>): Int = trailheadScores(input, false)
+private fun part2(input: Map<Position, Int>): Int = trailheadScores(input, true)
+
+private fun trailheadScores(input: Map<Position, Int>, findAll: Boolean): Int {
     var result = 0
     for (cell in input) {
         if (cell.value == 0) {
-            result += dfs(input, cell.key).toSet().size
+            val trailheadScore = if (findAll) {
+                dfs(input, cell.key).toList().size
+            } else {
+                dfs(input, cell.key).toSet().size
+            }
+            result += trailheadScore
         }
     }
     return result
 }
-private fun part2(input: List<String>): Int = TODO()
-
 
 private fun dfs(cells: Map<Position, Int>, cell: Position): Sequence<Position> = sequence {
     if (cells[cell] == 9) {
