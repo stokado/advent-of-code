@@ -29,6 +29,20 @@ fun String.splitLongs(vararg delimiters: String = arrayOf(" ", ",", ", ")): List
 
 fun <T> List<T>.toPair(): Pair<T, T> = get(0) to get(1)
 
+fun <T> List<T>.splitByParity(): Pair<List<T>, List<T>> {
+    val first = ArrayList<T>((size + 1) / 2)
+    val second = ArrayList<T>((size + 1) / 2)
+
+    for ((index, element) in this.withIndex()) {
+        if (index % 2 == 0) {
+            first.add(element)
+        } else {
+            second.add(element)
+        }
+    }
+    return first to second
+}
+
 /** More convenient way to print test values. */
 fun <T> T.printValue(): T = also(::println)
 
