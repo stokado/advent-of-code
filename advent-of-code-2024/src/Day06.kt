@@ -43,7 +43,7 @@ private fun part2(input: Input): Int {
         if (nextPosition !in seenLocation &&
             willFormCycle(
                 start = position,
-                initialDirection = nextDirection.turnRight(),
+                initialDirection = nextDirection.turn90(clockwise = true),
                 obstacles = input.obstacles + nextPosition,
             )
         ) {
@@ -70,7 +70,7 @@ private inline fun guardWalk(
         var nextPosition = position.nextInDirection(direction)
 
         while (nextPosition in obstacles) {
-            direction = direction.turnRight()
+            direction = direction.turn90(clockwise = true)
             nextPosition = position.nextInDirection(direction)
         }
 
