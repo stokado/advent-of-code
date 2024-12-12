@@ -4,18 +4,15 @@ import libs.Direction.Companion.nextInDirection
 private const val DAY = "Day12"
 
 fun main() {
-    val input = readInput(DAY)
-    val testInput = readInput("${DAY}_test1")
+    fun testInput(n: Int) = readInput("${DAY}_test$n")
+    fun input() = readInput(DAY)
 
-    val part1Expected = 140
-    val part1Answer = part1(testInput)
-
-    check(part1(readInput("${DAY}_test1")) == 140)
-    check(part1(readInput("${DAY}_test2")) == 772)
-    check(part1(readInput("${DAY}_test3")) == 1930)
-
-
-    partResults("Part 1", part1Expected, part1Answer) { part1(input) }
+    "Part 1" {
+        part1(testInput(1)) shouldBe 140
+        part1(testInput(2)) shouldBe 772
+        part1(testInput(3)) shouldBe 1930
+        measureAnswer { part1(input()) }
+    }
 
 //    val part2Expected = 0
 //    val part2Answer = part2(testInput)
