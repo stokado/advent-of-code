@@ -11,6 +11,7 @@ class Matrix<T>(lines: List<List<T>>) {
     val columnCount: Int = lines.first().size
     val lastColumnIndex: Int = columnCount - 1
     val columnIndices: IntRange = 0..lastColumnIndex
+    val bounds = Bounds(rowIndices, columnIndices)
 
     private var values: MutableList<T> = MutableList(rowCount * columnCount) { i ->
         lines[i / columnCount][i % columnCount]
@@ -20,6 +21,10 @@ class Matrix<T>(lines: List<List<T>>) {
 
     operator fun set(x: Int, y: Int, value: T) {
         values[index(x, y)] = value
+    }
+
+    operator fun contains(position: Position): Boolean {
+        return position in bounds
     }
 
     private fun index(x: Int, y: Int): Int = x * columnCount + y
