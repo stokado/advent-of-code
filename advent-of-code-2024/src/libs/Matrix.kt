@@ -27,6 +27,13 @@ class Matrix<T>(lines: List<List<T>>) {
         return position in bounds
     }
 
+    fun getOrNull(position: Position): T? {
+        if (position in bounds) {
+            return this[position]
+        }
+        return null
+    }
+
     private fun index(x: Int, y: Int): Int = x * columnCount + y
 
     fun <T> find(value: T): Position {
@@ -46,6 +53,14 @@ fun <T> List<List<T>>.toMatrix(): Matrix<T> = Matrix(this)
 fun readMatrix(fileName: String): Matrix<Char> = readMatrix(fileName) { line -> line.map { it } }
 fun <T> readMatrix(fileName: String, lineTransform: (String) -> List<T>): Matrix<T> =
     readLines(fileName, lineTransform).toMatrix()
+
+fun Matrix<*>.positions(): Sequence<Position> = sequence {
+    for (row in rowIndices) {
+        for (column in columnIndices) {
+            yield(Position(row, column))
+        }
+    }
+}
 
 /** Prints matrix row by row representing each element as a char. */
 fun <T> Matrix<T>.debugPrint(transform: (position: Position, value: T) -> Char) {

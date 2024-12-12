@@ -18,3 +18,5 @@ enum class Direction(val dRow: Int, val dCol: Int) {
         WEST -> NORTH
     }
 }
+
+fun Position.nextBy(direction: Direction): Position = offsetBy(direction.dRow, direction.dCol)

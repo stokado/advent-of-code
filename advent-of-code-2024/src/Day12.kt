@@ -1,7 +1,7 @@
 import libs.*
-import libs.Direction.Companion.nextInDirection
 
 private const val DAY = "Day12"
+private typealias Garden = Matrix<Char>
 
 fun main() {
     fun testInput(n: Int) = readInput("${DAY}_test$n")
@@ -14,46 +14,57 @@ fun main() {
         measureAnswer { part1(input()) }
     }
 
-//    val part2Expected = 0
-//    val part2Answer = part2(testInput)
-
-//    partResults("Part 2", part2Expected, part2Answer) { part2(input) }
+//    "Part 2" {
+//        part2(testInput(1)) shouldBe 80
+//        part2(testInput(2)) shouldBe 436
+//        part2(testInput(3)) shouldBe 1206
+//        measureAnswer { part2(input()) }
+//    }
 }
 
-private fun part1(input: Matrix<Char>): Int {
-    val visited = mutableSetOf<Position>()
-    var result = 0
+private fun part1(input: Garden): Int = calculateRegionsPrice(input)
+private fun part2(input: Garden): Int = calculateRegionsPrice(input)
 
-    for (row in input.rowIndices) {
-        for (column in input.columnIndices) {
-            val position = Position(row, column)
-            if (position !in visited) {
-                val (area, perimeter) = input.countAreaAndPerimeter(position, visited)
-                result += area * perimeter
+private fun calculateRegionsPrice(map: Garden): Int {
+    val visited = mutableSetOf<Position>()
+
+    fun regionPrices(start: Position): Int {
+        var area = 0
+        var fences = 0
+        val context = RegionContext(map, fruit = map[start])
+
+        val queue = ArrayDeque<Position>()
+        fun addNext(position: Position) {
+            if (visited.add(position)) {
+                queue += position
             }
         }
-    }
-    return result
-}
 
-private fun part2(input: List<String>): Int = TODO()
+        addNext(start)
+        while (queue.isNotEmpty()) {
+            val position = queue.removeFirst()
+            area += 1
+            fences += context.countSides(position)
 
-private fun Matrix<Char>.countAreaAndPerimeter(position: Position, visited: MutableSet<Position>): Pair<Int, Int> {
-    var area = 1
-    var perimeter = 0
-    val fruit = this[position]
-    visited.add(position)
-    Direction.orthogonal.forEach { direction ->
-        val nextPosition = position.nextInDirection(direction)
-        if (nextPosition !in bounds || this[nextPosition] != fruit) {
-            perimeter += 1
-        } else if (nextPosition !in visited) {
-            val (nextArea, nextPerimeter) = countAreaAndPerimeter(nextPosition, visited)
-            area += nextArea
-            perimeter += nextPerimeter
+            Direction.orthogonal.asSequence()
+                .map(position::nextBy)
+                .filter(context::isInRegion)
+                .forEach(::addNext)
         }
+        return area * fences
     }
-    return area to perimeter
+
+    return map.positions().filter { it !in visited }.sumOf { regionPrices(it) }
 }
 
-private fun readInput(name: String): Matrix<Char> = readMatrix(name)
+private fun RegionContext.countSides(position: Position): Int =
+    Direction.orthogonal.count { !isInRegion(position.nextBy(it)) }
+
+
+private class RegionContext(val map: Garden, private val fruit: Char) {
+    fun isInRegion(position: Position): Boolean {
+        return map.getOrNull(position) == fruit
+    }
+}
+
+private fun readInput(name: String): Garden = readMatrix(name)
